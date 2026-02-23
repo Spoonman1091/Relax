@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.relax.app.ui.components.FeaturedCard
 import com.relax.app.ui.components.MeditationCard
+import com.relax.app.ui.components.SectionHeader
 import com.relax.app.ui.components.SleepStoryCard
 import com.relax.app.ui.theme.DeepNavy
 import com.relax.app.ui.theme.GradientEnd
@@ -208,17 +209,6 @@ private fun SectionLabel(text: String) {
         color = TextMuted,
         fontWeight = FontWeight.SemiBold,
         letterSpacing = androidx.compose.ui.unit.TextUnit(1f, androidx.compose.ui.unit.TextUnitType.Sp)
-    )
-}
-
-@Composable
-fun SectionHeader(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleLarge,
-        color = Color.White,
-        fontWeight = FontWeight.SemiBold,
-        modifier = modifier
     )
 }
 

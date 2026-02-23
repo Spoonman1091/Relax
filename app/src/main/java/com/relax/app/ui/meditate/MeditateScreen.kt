@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.relax.app.data.model.MeditationCategory
 import com.relax.app.ui.components.MeditationCard
-import com.relax.app.ui.home.SectionHeader
+import com.relax.app.ui.components.SectionHeader
 import com.relax.app.ui.theme.CalmPurple
 import com.relax.app.ui.theme.GradientEnd
 import com.relax.app.ui.theme.GradientStart

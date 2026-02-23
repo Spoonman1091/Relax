@@ -61,35 +61,50 @@ class PlayerViewModel @Inject constructor(
             else -> ContentType.MEDITATION
         }
 
-        val (title, subtitle, audioUrl, durationMin) = when (type) {
+        val title: String
+        val subtitle: String
+        val audioUrl: String
+        val durationMin: Int
+
+        when (type) {
             ContentType.MEDITATION -> {
                 val meditation = repository.getMeditations().find { it.id == contentId }
-                listOf(
-                    meditation?.title ?: "Meditation",
-                    meditation?.subtitle ?: "",
-                    meditation?.audioUrl ?: "",
-                    meditation?.durationMinutes ?: 10
-                )
+                if (meditation != null) {
+                    title = meditation.title
+                    subtitle = meditation.subtitle
+                    audioUrl = meditation.audioUrl
+                    durationMin = meditation.durationMinutes
+                } else {
+                    // Fall back to DailyCalm if the id matches
+                    val dailyCalm = repository.getDailyCalm().takeIf { it.id == contentId }
+                    title = dailyCalm?.title ?: "Meditation"
+                    subtitle = dailyCalm?.subtitle ?: ""
+                    audioUrl = dailyCalm?.audioUrl ?: ""
+                    durationMin = dailyCalm?.durationMinutes ?: 10
+                }
             }
             ContentType.SLEEP_STORY -> {
                 val story = repository.getSleepStories().find { it.id == contentId }
-                listOf(
-                    story?.title ?: "Sleep Story",
-                    story?.author ?: "",
-                    story?.audioUrl ?: "",
-                    story?.durationMinutes ?: 30
-                )
+                title = story?.title ?: "Sleep Story"
+                subtitle = story?.author ?: ""
+                audioUrl = story?.audioUrl ?: ""
+                durationMin = story?.durationMinutes ?: 30
             }
-            ContentType.SOUNDSCAPE -> listOf("Soundscape", "", "", 0)
+            ContentType.SOUNDSCAPE -> {
+                title = "Soundscape"
+                subtitle = ""
+                audioUrl = ""
+                durationMin = 0
+            }
         }
 
-        val durationMs = (durationMin as Int).toLong() * 60_000L
+        val durationMs = durationMin.toLong() * 60_000L
 
         _playerState.value = PlayerState(
-            title = title as String,
-            subtitle = subtitle as String,
+            title = title,
+            subtitle = subtitle,
             contentType = type,
-            audioUrl = audioUrl as String,
+            audioUrl = audioUrl,
             durationMs = durationMs
         )
 
@@ -126,15 +141,17 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun skipForward() {
-        val newPosition = (_playerState.value.currentPositionMs + 30_000L)
-            .coerceAtMost(_playerState.value.durationMs)
-        seekTo(newPosition.toFloat() / _playerState.value.durationMs)
+        val duration = _playerState.value.durationMs
+        if (duration == 0L) return
+        val newPosition = (_playerState.value.currentPositionMs + 30_000L).coerceAtMost(duration)
+        seekTo(newPosition.toFloat() / duration)
     }
 
     fun skipBackward() {
-        val newPosition = (_playerState.value.currentPositionMs - 30_000L)
-            .coerceAtLeast(0L)
-        seekTo(newPosition.toFloat() / _playerState.value.durationMs)
+        val duration = _playerState.value.durationMs
+        if (duration == 0L) return
+        val newPosition = (_playerState.value.currentPositionMs - 30_000L).coerceAtLeast(0L)
+        seekTo(newPosition.toFloat() / duration)
     }
 
     private fun startProgressTracking() {

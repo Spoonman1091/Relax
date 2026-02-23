@@ -20,7 +20,8 @@ class ContentRepository @Inject constructor() {
         theme = "Acceptance",
         durationMinutes = 10,
         gradientStart = Color(0xFF134E5E),
-        gradientEnd = Color(0xFF71B280)
+        gradientEnd = Color(0xFF71B280),
+        audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Powerful%20mindfulness%20meditation.mp3"
     )
 
     fun getMeditations(): List<Meditation> = listOf(
@@ -33,6 +34,7 @@ class ContentRepository @Inject constructor() {
             gradientStart = Color(0xFFFF9A9E),
             gradientEnd = Color(0xFFFECFEF),
             narrator = "Tamara Levitt",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Morning%20meditation.mp3",
             isFree = true
         ),
         Meditation(
@@ -44,6 +46,7 @@ class ContentRepository @Inject constructor() {
             gradientStart = Color(0xFF4568DC),
             gradientEnd = Color(0xFFB06AB3),
             narrator = "Jeff Warren",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Mindfulness%20meditation%20guided.mp3",
             isNew = true
         ),
         Meditation(
@@ -54,7 +57,8 @@ class ContentRepository @Inject constructor() {
             category = MeditationCategory.SLEEP,
             gradientStart = Color(0xFF0F3460),
             gradientEnd = Color(0xFF533483),
-            narrator = "Tamara Levitt"
+            narrator = "Tamara Levitt",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Deep%20Relaxation.mp3"
         ),
         Meditation(
             id = "m4",
@@ -64,7 +68,8 @@ class ContentRepository @Inject constructor() {
             category = MeditationCategory.ANXIETY,
             gradientStart = Color(0xFFFF8FA3),
             gradientEnd = Color(0xFFFF6B6B),
-            narrator = "Jay Shetty"
+            narrator = "Jay Shetty",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Healing%20meditation.mp3"
         ),
         Meditation(
             id = "m5",
@@ -75,6 +80,7 @@ class ContentRepository @Inject constructor() {
             gradientStart = Color(0xFF6BCB77),
             gradientEnd = Color(0xFF4D96FF),
             narrator = "Jeff Warren",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Meditation%20everyone%20needs.mp3",
             isFree = true
         ),
         Meditation(
@@ -85,7 +91,8 @@ class ContentRepository @Inject constructor() {
             category = MeditationCategory.SLEEP,
             gradientStart = Color(0xFF2D1B69),
             gradientEnd = Color(0xFF11998E),
-            narrator = "Tamara Levitt"
+            narrator = "Tamara Levitt",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Fall%20asleep.mp3"
         ),
         Meditation(
             id = "m7",
@@ -96,6 +103,7 @@ class ContentRepository @Inject constructor() {
             gradientStart = Color(0xFF667EEA),
             gradientEnd = Color(0xFF764BA2),
             narrator = "Tamara Levitt",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Ease%20Anxiety.mp3",
             isNew = true
         ),
         Meditation(
@@ -106,7 +114,8 @@ class ContentRepository @Inject constructor() {
             category = MeditationCategory.STRESS,
             gradientStart = Color(0xFFFC5C7D),
             gradientEnd = Color(0xFF6A82FB),
-            narrator = "Jeff Warren"
+            narrator = "Jeff Warren",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Ultimate%20Relaxation.mp3"
         ),
         Meditation(
             id = "m9",
@@ -116,7 +125,8 @@ class ContentRepository @Inject constructor() {
             category = MeditationCategory.RELATIONSHIPS,
             gradientStart = Color(0xFFFFD166),
             gradientEnd = Color(0xFFFF8C42),
-            narrator = "Jay Shetty"
+            narrator = "Jay Shetty",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/Positive%20energy.mp3"
         ),
         Meditation(
             id = "m10",
@@ -127,6 +137,7 @@ class ContentRepository @Inject constructor() {
             gradientStart = Color(0xFF4ECDC4),
             gradientEnd = Color(0xFF44A08D),
             narrator = "Tamara Levitt",
+            audioUrl = "https://archive.org/download/PowerfulMindfulnessMeditation/10%20minutes%20meditation.mp3",
             isFree = true
         )
     )
@@ -140,6 +151,7 @@ class ContentRepository @Inject constructor() {
             description = "Journey through the peaceful countryside on a gentle overnight train as the world drifts by in moonlit silence.",
             gradientStart = Color(0xFF0F0C29),
             gradientEnd = Color(0xFF302B63),
+            audioUrl = "https://archive.org/download/railway_children_librivox/railwaychildren_01_nesbit.mp3",
             isFree = true
         ),
         SleepStory(
@@ -149,7 +161,8 @@ class ContentRepository @Inject constructor() {
             durationMinutes = 35,
             description = "Wander through an ancient forest where fireflies dance and the breeze carries the softest songs of nature.",
             gradientStart = Color(0xFF1D4350),
-            gradientEnd = Color(0xFFA43931)
+            gradientEnd = Color(0xFFA43931),
+            audioUrl = "https://archive.org/download/wind_willows_ap_librivox/wind_willows_01_grahame_ap.mp3"
         ),
         SleepStory(
             id = "ss3",
@@ -159,6 +172,7 @@ class ContentRepository @Inject constructor() {
             description = "Float on warm, still waters beneath a canopy of stars as the ocean rocks you gently to sleep.",
             gradientStart = Color(0xFF005C97),
             gradientEnd = Color(0xFF363795),
+            audioUrl = "https://archive.org/download/20000_leagues_under_the_seas_librivox/20000leaguesundertheseas_1-01_verne.mp3",
             isNew = true
         ),
         SleepStory(
@@ -168,7 +182,8 @@ class ContentRepository @Inject constructor() {
             durationMinutes = 38,
             description = "Explore the endless halls of a magical library where every book holds a gateway to peaceful dreams.",
             gradientStart = Color(0xFF3A1C71),
-            gradientEnd = Color(0xFFD76D77)
+            gradientEnd = Color(0xFFD76D77),
+            audioUrl = "https://archive.org/download/arabian_nights_entertainments_02_2111_librivox/arabiannights02_01_anonymous_128kb.mp3"
         ),
         SleepStory(
             id = "ss5",
@@ -177,7 +192,8 @@ class ContentRepository @Inject constructor() {
             durationMinutes = 32,
             description = "Walk through endless lavender fields in Provence as the warm sun sets and the fragrant air calms your mind.",
             gradientStart = Color(0xFF654EA3),
-            gradientEnd = Color(0xFFEAAFC8)
+            gradientEnd = Color(0xFFEAAFC8),
+            audioUrl = "https://archive.org/download/cranford_sd_librivox/cranford_01_gaskell.mp3"
         ),
         SleepStory(
             id = "ss6",
@@ -187,6 +203,7 @@ class ContentRepository @Inject constructor() {
             description = "Find refuge in a cozy mountain cabin as snow falls softly outside and a warm fire crackles within.",
             gradientStart = Color(0xFF373B44),
             gradientEnd = Color(0xFF4286F4),
+            audioUrl = "https://archive.org/download/heidi_solo_librivox/heidi_01_spyri.mp3",
             isNew = true
         )
     )
@@ -248,6 +265,7 @@ class ContentRepository @Inject constructor() {
             id = "sc1",
             name = "Rain on Window",
             emoji = "🌧️",
+            audioUrl = "https://archive.org/download/RainSound13/Gentle%20Rain%20and%20Thunder.mp3",
             gradientStart = Color(0xFF373B44),
             gradientEnd = Color(0xFF4286F4)
         ),
@@ -255,6 +273,7 @@ class ContentRepository @Inject constructor() {
             id = "sc2",
             name = "Forest Morning",
             emoji = "🌲",
+            audioUrl = "https://archive.org/download/NightSounds_201801/Soothing%20Night%20Time%20Forest%20Sounds.mp3",
             gradientStart = Color(0xFF134E5E),
             gradientEnd = Color(0xFF71B280)
         ),
@@ -262,6 +281,7 @@ class ContentRepository @Inject constructor() {
             id = "sc3",
             name = "Ocean Waves",
             emoji = "🌊",
+            audioUrl = "https://archive.org/download/OceanWaves_201602/OceanWaves.mp3",
             gradientStart = Color(0xFF005C97),
             gradientEnd = Color(0xFF363795)
         ),
@@ -269,6 +289,7 @@ class ContentRepository @Inject constructor() {
             id = "sc4",
             name = "Crackling Fire",
             emoji = "🔥",
+            audioUrl = "https://archive.org/download/Freesound-263994/Fireplace_3_hours-263994.mp3",
             gradientStart = Color(0xFF8B1A1A),
             gradientEnd = Color(0xFFFF8C42)
         ),
@@ -276,6 +297,7 @@ class ContentRepository @Inject constructor() {
             id = "sc5",
             name = "White Noise",
             emoji = "〰️",
+            audioUrl = "https://archive.org/download/whitenoise12hours/White%20Noise%2012%20Hours.mp3",
             gradientStart = Color(0xFF2C3E50),
             gradientEnd = Color(0xFF4CA1AF)
         ),
@@ -283,6 +305,7 @@ class ContentRepository @Inject constructor() {
             id = "sc6",
             name = "Thunderstorm",
             emoji = "⛈️",
+            audioUrl = "https://archive.org/download/1HourThunderstorm/1HrThunderstorm.mp3",
             gradientStart = Color(0xFF0F0C29),
             gradientEnd = Color(0xFF302B63)
         ),
@@ -290,6 +313,7 @@ class ContentRepository @Inject constructor() {
             id = "sc7",
             name = "Mountain Stream",
             emoji = "💧",
+            audioUrl = "https://archive.org/download/8-hours-of-waterfall-peaceful-sounds/8%20HOURS%20Calming%20Sounds%20of%20a%20Forest%20Stream%20and%20Bird%20Songs.mp3",
             gradientStart = Color(0xFF1D4350),
             gradientEnd = Color(0xFFA43931)
         ),
@@ -297,6 +321,7 @@ class ContentRepository @Inject constructor() {
             id = "sc8",
             name = "Coffee Shop",
             emoji = "☕",
+            audioUrl = "https://archive.org/download/coffee-shop-sounds-12/Coffee%20Shop%20Sounds%2011.mp3",
             gradientStart = Color(0xFF4A2C2A),
             gradientEnd = Color(0xFF8B5E52)
         ),
@@ -304,6 +329,7 @@ class ContentRepository @Inject constructor() {
             id = "sc9",
             name = "Night Crickets",
             emoji = "🌙",
+            audioUrl = "https://archive.org/download/relaxingcricketsoundsforsleep/Relaxing%20Cricket%20Sounds%20For%20Sleep.mp3",
             gradientStart = Color(0xFF0B1426),
             gradientEnd = Color(0xFF1A2E4A)
         )
