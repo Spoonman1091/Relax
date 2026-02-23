@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Relax</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_meditate">Meditate</string>
+    <string name="tab_sleep">Sleep</string>
+    <string name="tab_breathe">Breathe</string>
+    <string name="tab_sounds">Sounds</string>
+    <string name="daily_calm">Daily Calm</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="skip_forward">Skip forward 30 seconds</string>
+    <string name="skip_back">Skip back 30 seconds</string>
+    <string name="premium_content">Premium content</string>
+    <string name="new_content">New</string>
+    <string name="notification_channel_name">Relax Playback</string>
+    <string name="notification_channel_description">Relax media playback controls</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7B6CF0"
+        android:strokeWidth="2.5"
+        android:pathData="M54,20 A34,34 0 1 1 53.99,20 Z" />
+
+    <!-- Lotus petal top -->
+    <path
+        android:fillColor="#7B6CF0"
+        android:fillAlpha="0.9"
+        android:pathData="M54,28 C54,28 48,36 48,42 C48,45.3 50.7,48 54,48 C57.3,48 60,45.3 60,42 C60,36 54,28 54,28 Z" />
+
+    <!-- Lotus petal bottom-left -->
+    <path
+        android:fillColor="#7B6CF0"
+        android:fillAlpha="0.7"
+        android:pathData="M54,60 C54,60 44,57 40,52 C38,49.5 38.5,46 41,44.5 C43.5,43 46.5,44 48,46.5 C51,52 54,60 54,60 Z" />
+
+    <!-- Lotus petal bottom-right -->
+    <path
+        android:fillColor="#7B6CF0"
+        android:fillAlpha="0.7"
+        android:pathData="M54,60 C54,60 64,57 68,52 C70,49.5 69.5,46 67,44.5 C64.5,43 61.5,44 60,46.5 C57,52 54,60 54,60 Z" />
+
+    <!-- Center circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.95"
+        android:pathData="M54,44 A6,6 0 1 1 53.99,44 Z" />
+
+    <!-- Subtle glow ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#A899F5"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.5"
+        android:pathData="M54,14 A40,40 0 1 1 53.99,14 Z" />
+
+</vector>
