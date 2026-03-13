@@ -10,6 +10,8 @@ android {
     namespace = "com.relax.app"
     compileSdk = 34
 
+    val youtubeApiKey = project.properties["YOUTUBE_API_KEY"]?.toString() ?: ""
+
     defaultConfig {
         applicationId = "com.relax.app"
         minSdk = 26
@@ -18,6 +20,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "YOUTUBE_API_KEY", "\"$youtubeApiKey\"")
     }
 
     buildTypes {
@@ -41,6 +44,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -77,6 +81,11 @@ dependencies {
 
     // System UI Controller
     implementation(libs.accompanist.systemuicontroller)
+
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
 
     // Testing
     testImplementation(libs.junit)

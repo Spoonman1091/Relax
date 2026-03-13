@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -129,14 +130,9 @@ fun PlayerScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // Animated artwork
-            PlayerArtwork(isPlaying = state.isPlaying)
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Title and save
+            // Title and save — always visible
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -167,27 +163,49 @@ fun PlayerScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Progress slider
-            ProgressSection(
-                progress = state.progressFraction,
-                currentTime = state.currentPositionFormatted,
-                totalTime = state.durationFormatted,
-                onSeek = viewModel::seekTo
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Playback controls
-            PlaybackControls(
-                isPlaying = state.isPlaying,
-                onPlayPause = viewModel::togglePlayPause,
-                onSkipBack = viewModel::skipBackward,
-                onSkipForward = viewModel::skipForward
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
+            when {
+                state.isLoadingVideo -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = CalmPurple)
+                    }
+                }
+                state.videoId != null -> {
+                    val videoId = state.videoId!!
+                    Box(modifier = Modifier.weight(1f)) {
+                        YouTubePlayerScreen(
+                            videoId = videoId,
+                            viewModel = viewModel
+                        )
+                    }
+                }
+                else -> {
+                    // ExoPlayer / demo UI
+                    Spacer(modifier = Modifier.height(24.dp))
+                    PlayerArtwork(isPlaying = state.isPlaying)
+                    Spacer(modifier = Modifier.height(32.dp))
+                    ProgressSection(
+                        progress = state.progressFraction,
+                        currentTime = state.currentPositionFormatted,
+                        totalTime = state.durationFormatted,
+                        onSeek = viewModel::seekTo
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                    PlaybackControls(
+                        isPlaying = state.isPlaying,
+                        onPlayPause = viewModel::togglePlayPause,
+                        onSkipBack = viewModel::skipBackward,
+                        onSkipForward = viewModel::skipForward
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
         }
     }
 }

@@ -8,23 +8,37 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.relax.app.data.model.ContentType
 import com.relax.app.data.model.PlayerState
 import com.relax.app.data.repository.ContentRepository
+import com.relax.app.data.repository.YouTubeContentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+sealed class PlayerCommand {
+    object Play : PlayerCommand()
+    object Pause : PlayerCommand()
+    data class Seek(val seconds: Float) : PlayerCommand()
+}
+
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val repository: ContentRepository,
+    private val youTubeContentRepository: YouTubeContentRepository,
     private val exoPlayer: ExoPlayer
 ) : ViewModel() {
 
     private val _playerState = MutableStateFlow(PlayerState())
     val playerState: StateFlow<PlayerState> = _playerState.asStateFlow()
+
+    private val _playerCommand = MutableSharedFlow<PlayerCommand>(extraBufferCapacity = 1)
+    val playerCommand: SharedFlow<PlayerCommand> = _playerCommand.asSharedFlow()
 
     private var progressJob: Job? = null
 
@@ -75,7 +89,6 @@ class PlayerViewModel @Inject constructor(
                     audioUrl = meditation.audioUrl
                     durationMin = meditation.durationMinutes
                 } else {
-                    // Fall back to DailyCalm if the id matches
                     val dailyCalm = repository.getDailyCalm().takeIf { it.id == contentId }
                     title = dailyCalm?.title ?: "Meditation"
                     subtitle = dailyCalm?.subtitle ?: ""
@@ -105,24 +118,43 @@ class PlayerViewModel @Inject constructor(
             subtitle = subtitle,
             contentType = type,
             audioUrl = audioUrl,
-            durationMs = durationMs
+            durationMs = durationMs,
+            isLoadingVideo = true
         )
 
-        if (audioUrl.isNotEmpty()) {
-            exoPlayer.setMediaItem(MediaItem.fromUri(audioUrl))
-            exoPlayer.prepare()
+        viewModelScope.launch {
+            val videoId = youTubeContentRepository.findVideoId(title, contentType)
+            _playerState.value = _playerState.value.copy(
+                videoId = videoId,
+                isLoadingVideo = false
+            )
+            if (videoId == null && audioUrl.isNotEmpty()) {
+                exoPlayer.setMediaItem(MediaItem.fromUri(audioUrl))
+                exoPlayer.prepare()
+            }
         }
     }
 
     fun togglePlayPause() {
-        if (exoPlayer.isPlaying) {
+        val state = _playerState.value
+        if (state.videoId != null) {
+            if (state.isPlaying) {
+                _playerCommand.tryEmit(PlayerCommand.Pause)
+                _playerState.value = state.copy(isPlaying = false)
+                stopProgressTracking()
+            } else {
+                _playerCommand.tryEmit(PlayerCommand.Play)
+                _playerState.value = state.copy(isPlaying = true)
+                startProgressTracking()
+            }
+        } else if (exoPlayer.isPlaying) {
             exoPlayer.pause()
         } else {
-            if (_playerState.value.audioUrl.isNotEmpty()) {
+            if (state.audioUrl.isNotEmpty()) {
                 exoPlayer.play()
             } else {
                 // Demo mode: simulate playback without real audio
-                _playerState.value = _playerState.value.copy(isPlaying = !_playerState.value.isPlaying)
+                _playerState.value = state.copy(isPlaying = !state.isPlaying)
                 if (_playerState.value.isPlaying) {
                     startProgressTracking()
                 } else {
@@ -133,11 +165,15 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun seekTo(fraction: Float) {
-        val position = (fraction * _playerState.value.durationMs).toLong()
-        if (_playerState.value.audioUrl.isNotEmpty()) {
+        val state = _playerState.value
+        val position = (fraction * state.durationMs).toLong()
+        if (state.videoId != null) {
+            val seconds = position / 1000f
+            _playerCommand.tryEmit(PlayerCommand.Seek(seconds))
+        } else if (state.audioUrl.isNotEmpty()) {
             exoPlayer.seekTo(position)
         }
-        _playerState.value = _playerState.value.copy(currentPositionMs = position)
+        _playerState.value = state.copy(currentPositionMs = position)
     }
 
     fun skipForward() {
@@ -154,17 +190,45 @@ class PlayerViewModel @Inject constructor(
         seekTo(newPosition.toFloat() / duration)
     }
 
+    fun onYouTubePlayerReady(durationSeconds: Double) {
+        _playerState.value = _playerState.value.copy(
+            durationMs = (durationSeconds * 1000).toLong()
+        )
+    }
+
+    fun onYouTubePositionUpdate(currentSeconds: Double) {
+        _playerState.value = _playerState.value.copy(
+            currentPositionMs = (currentSeconds * 1000).toLong()
+        )
+    }
+
+    fun onYouTubeStateChange(ytState: Int) {
+        // YT player states: -1=unstarted, 0=ended, 1=playing, 2=paused, 3=buffering, 5=cued
+        when (ytState) {
+            1 -> {
+                _playerState.value = _playerState.value.copy(isPlaying = true)
+                startProgressTracking()
+            }
+            0, 2 -> {
+                _playerState.value = _playerState.value.copy(isPlaying = false)
+                stopProgressTracking()
+            }
+        }
+    }
+
     private fun startProgressTracking() {
         progressJob?.cancel()
         progressJob = viewModelScope.launch {
             while (_playerState.value.isPlaying) {
-                val position = if (_playerState.value.audioUrl.isNotEmpty()) {
-                    exoPlayer.currentPosition
-                } else {
-                    (_playerState.value.currentPositionMs + 1000L)
-                        .coerceAtMost(_playerState.value.durationMs)
+                val state = _playerState.value
+                if (state.videoId == null) {
+                    val position = if (state.audioUrl.isNotEmpty()) {
+                        exoPlayer.currentPosition
+                    } else {
+                        (state.currentPositionMs + 1000L).coerceAtMost(state.durationMs)
+                    }
+                    _playerState.value = state.copy(currentPositionMs = position)
                 }
-                _playerState.value = _playerState.value.copy(currentPositionMs = position)
                 delay(1000L)
             }
         }

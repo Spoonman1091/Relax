@@ -7,7 +7,9 @@ data class PlayerState(
     val title: String = "",
     val subtitle: String = "",
     val contentType: ContentType = ContentType.MEDITATION,
-    val audioUrl: String = ""
+    val audioUrl: String = "",
+    val videoId: String? = null,
+    val isLoadingVideo: Boolean = false
 ) {
     val progressFraction: Float
         get() = if (durationMs > 0) currentPositionMs.toFloat() / durationMs else 0f
